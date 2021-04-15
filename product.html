@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Orinoco</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/2138d9e291.js" crossorigin="anonymous"></script>
+        <script src="js/product.js"></script>
+        <script src="js/cart.js"></script>
+        <script src="js/index.js"></script>    
+    </head>
+    <body>
+        <!-- Header -->
+        <div class="bg-dark pb-3 pt-3">
+            <div class="container">
+                <div class="row" style="display: flex; align-items: center">
+                    <div class="col-6">
+                        <a href="index.html" class="navbar-brand">Orinoco</a>
+                    </div>
+                    <a href="cart.html" class="col-6 text-right">
+                        <i class="fas fa-shopping-cart fa-lg"> Panier</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Heros -->
+
+
+        <!-- Main -->
+        <div class="container mt-4" >
+            <div id="product" class="row" style="display:flex; justify-content: center;">
+                    <!-- <template class="templateProduct"> -->
+                        <div class="card shadow mr-4" style="width: 500px; margin-bottom: 30px;">
+                            <img id="productImg" src="./images/vcam_1.jpg" alt="camera" class="card-img-top">
+                            <div class="card-body">
+                                <form class="product">
+                                    <h3 id="productName">nom du produit</h3>
+                                    <fieldset>
+                                        <label for="lense col-8" id="objectif">Objectif</label>
+                                        <select name="lense col-4" id="lense">
+                                        </select>
+                                    </fieldset>
+                                    <fieldset>
+                                        <label for="quantity">Quantité</label>
+                                        <input type="number" name="quantity" id="quantity" min="1" max="10" placeholder="1">
+                                    </fieldset>
+                                    <div class="error"></div>
+                                    <input type="hidden" name="id" id="id" value="5be1ef211c9d44000030b062">
+                                    <div class="product-buttons row">
+                                        <a class="btn col-6 text-center" href="/">Retour à l'accueil</a>
+                                        <button id= "addCart" class="btn col-6 text-center" type="submit">Ajouter au panier</button>
+                                    </div >
+                                </form>
+                            </div>
+                        </div>
+                    <!-- </template> -->
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div class="bg-light pt-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item"><a href="#">À propos</a></li>
+                            <li class="list-inline-item">&middot;</li>
+                            <li class="list-inline-item"><a href="#">Vie privée</a></li>
+                            <li class="list-inline-item">&middot;</li>
+                            <li class="list-inline-item"><a href="#">Conditions d'utilisations</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+</html>
