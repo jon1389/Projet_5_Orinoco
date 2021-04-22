@@ -1,96 +1,133 @@
+let productName = document.getElementById("productName");
+let productImg = document.getElementById("productImg");
+let lense = document.getElementById("lense");
+let price = document.getElementById("price");
+let addCart = document.getElementById("addCart");
+let quantity = document.getElementById("quantity");
+let cartNumber = document.getElementById("cartNumber");
+let idCamera
+
 const mainUrl = "https://ab-p5-api.herokuapp.com/api/cameras/";
-const url_string = window.location.href;
-const url = new URL(url_string);
-const id = url.searchParams.get("id");
 
-const productName = document.getElementById("productName");
-const productImg = document.getElementById("productImg");
-const lenseType = document.getElementById("lense");
-const errorDiv = document.querySelector(".error");
-
-var addCart = document.getElementById("addCart");
-
-// console.log(url_string);
-// console.log(url);
-// console.log(id);
-
-// const request = new XMLHttpRequest();
-// request.open("GET", mainUrl+id);
-// request.responseType ='json';
-// request.send();
-
-// request.onload = function() {
-//     if (request.readyState === XMLHttpRequest.DONE) {
-//         if (request.status === 200) {
-//         let reponse = request.response; // on stock la réponse
-//         document.getElementById("productName").textContent = reponse.name;
-//         document.getElementById("productImg").src = reponse.imageUrl;
-//         LensesList = reponse.lenses; //liste des lentilles
-//         console.log(LensesList);
-//         let option;
-//         LensesList.forEach(lense => {
-//             option = document.createElement("option");
-//             option.textContent = "test";
-//             lenseType.add(option);
-//         }); 
-//         }
-//         else {
-//         alert('Un problème est intervenu, merci de revenir plus tard.');
-//         }
-//     }
-// }
-
-function getItem() {
-    return fetch(mainUrl+id)
-        .then(function(httpBodyResponse) {
-            return httpBodyResponse.json();
-        })
-        .then(item => {
-            // console.log(item); // affiche les informations sur l'article
-            // affiche les informations du produit selectionné
-            document.getElementById("productName").textContent = item.name;
-            document.getElementById("productImg").src = item.imageUrl;
-            let lenses = item.lenses
-            // console.log(lenses) //affiche la liste des lentilles
-
-            // Boucle qui affiche chaque élément dans la liste déroulante 
-            for (let option = 0; option < lenses.length; option++) {
-                // console.log(lenses[option]); // affiche la valeur de l'index
-                // console.log(option); // affiche l'index
-                document.getElementById("lense").innerHTML += '<option value=' + option + '>'+ lenses[option] + '</option>';
-                
-            }
-        })
-        .catch(function(error){
-            alert(error);
-            document.querySelector(".error").textContent = "Une erreur est survenu, veuillez revenir plus tard.";
-        })
+class MyProduct {
+    constructor(idCamera, selectedLenses, itemQuantity) {
+        this.idCamera = idCamera;
+        this.selectedLenses = selectedLenses;
+        this.itemQuantity = itemQuantity;
+    }
 }
 
-getItem ()
+async function getCameras() {
+    return fetch(mainUrl)
+    .then((response) => response.json ())
+    .then((response) => {
+        let cameras = response;
+        // console.log(cameras); // Affiche l'ensemble des produits
+        getIdUrlAndCard(cameras);
+    })
+    .catch(function(error){
+        alert(error);
+        let errorDiv = document.querySelector(".error")
+        errorDiv.textContent = "Une erreur est survenu, veuillez revenir plus tard.";
+    })
+}
 
-// function addtoCart(){
-//     addCart.addEventListener(click, () => {
-        
-//     })
-// }
+/////////////////////////////APPEL DE LA FONCTION/////////////////////////////////
+getCameras();
+onLoadNumberInCart()
 
-// function getLenses() {
-//     return new Promise((resolve, reject) => {
-//         fetch(`${mainUrl+id}`)
-//             .then(data => data.json())
-//             .then(data => {
-//                 productName.textContent = data.name;
-//                 productImg.src = data.imageUrl;  
-//                 resolve()
-//             })
-//             .catch(error => {
-//                 reject(error);
-//                 errorDiv.innerText = "Une erreur est survenu, veuillez revenir plus tard."
-//             })
-//     });
-// }
 
-// getLenses().then(data => {
-//     console.log("ça marche");
-// })
+// Récupération de l'Id dans l'url
+function getIdUrlAndCard(cameras) {
+    let urlSearch = new URLSearchParams(window.location.search);
+    idCamera = urlSearch.get('id'); 
+    // console.log(idCamera); //Affiche l'id de la l'article choisie
+    getCameraItem(cameras, idCamera);
+};
+
+// Récupération de la caméra correspondant à l'Id
+function getCameraItem(cameras, idCamera) {
+    let choosenCamera = cameras.find(cameras => cameras["_id"] == idCamera);
+    // console.log(choosenCamera);
+    updateCameraCard(choosenCamera, idCamera)
+};
+
+getCameraItem();
+
+// Mise à jour de la carte produit
+function updateCameraCard (choosenCamera) {
+    // console.log(choosenCamera);
+    productName.textContent = choosenCamera.name;
+    productImg.src = choosenCamera.imageUrl;
+    price.textContent = "Prix unitaire : " + choosenCamera.price/100 + " €";
+    
+    // Boucle qui affiche chaque élément dans la liste déroulante 
+    let lenses = choosenCamera.lenses;
+    for (let option = 0; option < lenses.length; option++) {
+        // console.log(lenses[option]); // affiche la valeur de l'index
+        // console.log(option); // affiche l'index
+        lense.innerHTML += '<option class="lenseOption" value=' + option + ' >'+ lenses[option] + '</option>';
+    };
+    addToCart(addCart, choosenCamera);
+};
+
+
+
+function addToCart(addCart) {
+    let itemQuantity = 1;
+    addCart.addEventListener('click', () => {
+        let cartContent = JSON.parse(localStorage.getItem("cartContent"));
+        let selectedLenses = lense.options[lense.selectedIndex].text;
+        if (cartContent === null) {
+            cartContent = [];
+        }
+        let product = new MyProduct(idCamera, selectedLenses, itemQuantity);
+        let itemInCart = cartContent.find(cartContent => cartContent["idCamera"] == product.idCamera && cartContent["selectedLenses"] == product.selectedLenses)
+        if(itemInCart){
+            itemInCart.itemQuantity++;
+        }
+        else{
+            cartContent.push(product);
+        }
+        // console.log(itemInCart);
+        // console.log(cartContent);
+        // console.log(product);
+        localStorage.setItem("cartContent", JSON.stringify(cartContent));
+        // console.log(JSON.stringify(cartContent));
+        numberInCart()
+    })
+};
+
+function numberInCart(){
+    let totalItemNumber = 0;
+    let cartNumber = document.getElementById("cartNumber");
+    let cartContent = JSON.parse(localStorage.getItem("cartContent"));
+    let itemNumber = [];
+    if (cartContent === null) {
+        cartContent = [];
+    }
+    for (let index = 0; index < cartContent.length; index++) {
+        itemNumber.push(cartContent[index].itemQuantity);
+        // let itemNumber = cartContent[index].itemQuantity;
+        // console.log(itemNumber);
+    }
+    console.log(itemNumber);
+    for (let i = 0; i < itemNumber.length; i++) {
+        totalItemNumber += itemNumber[i];
+    }
+    console.log(totalItemNumber);
+    localStorage.setItem("totalItemNumber", totalItemNumber)
+    if(totalItemNumber){
+        cartNumber.textContent = totalItemNumber;
+    }
+}
+
+function onLoadNumberInCart() {
+    let totalItemNumber = localStorage.getItem("totalItemNumber");
+    if(totalItemNumber){
+        cartNumber.textContent = totalItemNumber;
+    }
+    else{
+        cartNumber.textContent = 0;
+    }
+}

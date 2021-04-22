@@ -1,5 +1,10 @@
+let cartNumber = document.getElementById("cartNumber");
 
 main()
+onLoadNumberInCart();
+
+
+
 
 async function main() {
     const products = await getProducts();
@@ -11,7 +16,7 @@ async function main() {
 
 //Fonction pour obtenir la liste des produits
 function getProducts() {
-    return fetch("https://ab-p5-api.herokuapp.com/api/cameras")
+    return fetch("https://ab-p5-api.herokuapp.com/api/cameras/")
         .then(function(httpBodyResponse) {
             return httpBodyResponse.json();
         })
@@ -41,4 +46,15 @@ function displayProduct(product) {
 
     document.getElementById("main").appendChild(cloneElement);
 }
+
+function onLoadNumberInCart() {
+    let totalItemNumber = localStorage.getItem("totalItemNumber");
+    if(totalItemNumber){
+        cartNumber.textContent = totalItemNumber;
+    }
+    else{
+        cartNumber.textContent = 0;
+    }
+}
+
 
