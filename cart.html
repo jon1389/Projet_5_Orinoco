@@ -34,6 +34,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th scope="col"></th>
                             <th scope="col">Appareil photo</th>
                             <th scope="col">Objectif</th>
                             <th scope="col">Prix unitaire</th>
@@ -44,19 +45,19 @@
                     <tbody id="cartTableBody">
                         <template id="templateCart">
                             <tr id="cartTableItems">
-                                <td id="cameraName">Nom de l'appareil</td>
-                                <td id="cameraLense">Lentille</td>
-                                <td id="cameraPrice">Prix</td>
-                                <td id="cameraQuantity">Qte</td>
-                                <td id="cameraTotalPrice">Prix total</td>
+                                <td><img id="cameraImg" src="" alt="photo de l'article" width="100px" height="90px"></td>
+                                <td id="cameraName" class="align-middle">Nom de l'appareil</td>
+                                <td id="cameraLense" class="align-middle">Lentille</td>
+                                <td id="cameraPrice" class="align-middle">Prix</td>
+                                <td id="cameraQuantity" class="align-middle">Qte</td>
+                                <td id="cameraTotalPrice" class="align-middle">Prix total</td>
                             </tr>
                         </template>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4" class="font-weight-bold">Total de la commande</td>
+                            <td colspan="5" class="font-weight-bold">Total de la commande</td>
                             <td id="cartTableTotalPrice" class="font-weight-bold">0€</td>
-                            <td></td>
                         </tr>
                         <td>
                             <button id="removeCart" class="btn btn-warning">
@@ -76,27 +77,27 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label for="firstName" class="pt-3">Prénom</label>
-                            <input type="text" class="form-control " id="firstName" placeholder="Votre prénom" required>    
+                            <input type="text" class="form-control emailForm" id="firstName" placeholder="Votre prénom" required>    
                         </div>
                         <div class="col-md-6 mb-1">
                             <label for="lastName" class="pt-3">Nom</label>
-                            <input type="text" class="form-control " id="lastName" placeholder="Votre nom" required>
+                            <input type="text" class="form-control emailForm" id="lastName" placeholder="Votre nom" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-8 mb-1">
                             <label for="address" class="pt-3">Adresse</label>
-                            <input type="text" class="form-control " id="address" placeholder="Votre adresse" required>
+                            <input type="text" class="form-control emailForm" id="address" placeholder="Votre adresse" required>
                         </div>
                         <div class="col-md-4 mb-1">
                             <label for="city" class="pt-3">Ville</label>
-                            <input type="text" class="form-control " id="city" placeholder="Votre ville" required>
+                            <input type="text" class="form-control emailForm" id="city" placeholder="Votre ville" required>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col mb-1">
+                        <div class="col mb-1 ">
                             <label for="email" class="pt-3">Email</label>
-                            <input type="email" class="form-control " id="email" placeholder="Votre email" required>
+                            <input type="email" class="form-control emailForm" id="email" placeholder="Votre email" required>
                             <span class="error"></span>
                         </div>
                     </div>
