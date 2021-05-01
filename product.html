@@ -46,9 +46,28 @@
                             <!-- <input type="hidden" name="id" id="id" value="5be1ef211c9d44000030b062"> -->
                             <div class="product-buttons row">
                                 <a class="btn col-6 text-center" href="/">Retour à l'accueil</a>
-                                <a href="#" id= "addCart" class="btn col-6 text-center">Ajouter au panier</a>
+                                <a href="#" id= "addCart" class="btn col-6 text-center" data-toggle="modal" data-target="#addCartModal">Ajouter au panier</a>
                             </div >
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addCartModal" tabindex="-1" role="dialog" aria-labelledby="addCartModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Panier</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body my-2">
+                    L'article a bien été ajouté au panier !
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Continuer les achats</button>
+                    <button id="goToCart" type="button" class="btn btn-primary">Aller au panier</button>
                     </div>
                 </div>
             </div>

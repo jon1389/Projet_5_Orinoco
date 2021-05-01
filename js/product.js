@@ -74,6 +74,7 @@ function updateCameraCard (choosenCamera) {
 
 
 function addToCart(addCart) {
+    let goToCart = document.getElementById("goToCart");
     let itemQuantity = 1;
     addCart.addEventListener('click', () => {
         let cartContent = JSON.parse(localStorage.getItem("cartContent"));
@@ -95,6 +96,9 @@ function addToCart(addCart) {
         localStorage.setItem("cartContent", JSON.stringify(cartContent));
         // console.log(JSON.stringify(cartContent));
         numberInCart()
+    });
+    goToCart.addEventListener("click", () => {
+        window.location.href = "cart.html"
     })
 };
 
