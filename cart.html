@@ -34,10 +34,10 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col"></th>
+                            <th scope="col" class="cartElementToBeHidden"></th>
                             <th scope="col">Appareil photo</th>
                             <th scope="col">Objectif</th>
-                            <th scope="col">Prix unitaire</th>
+                            <th scope="col" class="cartElementToBeHidden">Prix unitaire</th>
                             <th scope="col">Quantité</th>
                             <th scope="col">Prix total</th>
                         </tr>
@@ -45,10 +45,10 @@
                     <tbody id="cartTableBody">
                         <template id="templateCart">
                             <tr id="cartTableItems">
-                                <td width="100px" height="90px"><img id="cameraImg" src="" alt="photo de l'article" width="100px" height="90px"></td>
+                                <td class="cartElementToBeHidden" width="100px" height="90px"><img id="cameraImg" src="" alt="photo de l'article" width="100px" height="90px"></td>
                                 <td id="cameraName" class="align-middle">Nom de l'appareil</td>
                                 <td id="cameraLense" class="align-middle">Lentille</td>
-                                <td id="cameraPrice" class="align-middle">Prix</td>
+                                <td id="cameraPrice" class="align-middle cartElementToBeHidden">Prix</td>
                                 <td id="cameraQuantity" class="align-middle">Qte</td>
                                 <td id="cameraTotalPrice" class="align-middle">Prix total</td>
                             </tr>
@@ -56,56 +56,104 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5" class="font-weight-bold">Total de la commande</td>
+                            <td colspan="2" class="font-weight-bold">Total de la commande</td>
+                            <td class="cartElementToBeHidden" ></td>
+                            <td class="cartElementToBeHidden" ></td>
+                            <td></td>
                             <td id="cartTableTotalPrice" class="font-weight-bold">0€</td>
                         </tr>
                         <td colspan="2">
-                            <button id="removeCart" class="btn btn-warning">
+                            <button id="removeCart" class="btn btn-warning" data-toggle="modal" data-target="#emptyCartModal">
                             Vider le panier
                             </button>
                         </td>
                         <tr class="errorDiv"></tr>
+                        <div class="modal fade" id="emptyCartModal" tabindex="-1" role="dialog" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Êtes-vous sûr de vouloir vider le panier?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                    <button id="emptyCart" type="button" class="btn btn-primary" data-dismiss="modal">Vider le panier</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="cartIsEmptyModal" tabindex="-1" role="dialog" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Votre panier est vide !</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    <button id="returnToHome" type="button" class="btn btn-primary" data-dismiss="modal">Retourner à l'accueil</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </tfoot>
                 </table>
             </div>
         </section>
 
         <!-- Client form -->
-        <section class="container form">
-            <form id="form">
-                <div class="needs-validation">
-                    <div class="row">
-                        <div class="col-md-6 mb-1">
-                            <label for="firstName" class="pt-3">Prénom</label>
-                            <input type="text" class="form-control emailForm" id="firstName" placeholder="Votre prénom" required>    
-                        </div>
-                        <div class="col-md-6 mb-1">
-                            <label for="lastName" class="pt-3">Nom</label>
-                            <input type="text" class="form-control emailForm" id="lastName" placeholder="Votre nom" required>
-                        </div>
+        <section class="container">
+            <form class="container form" id="form">
+                <div class="row">
+                    <div class="form-control col-md-6">
+                        <label for="firstName">Prénom</label>
+                        <input type="text" placeholder="Votre prénom" id="firstName">
+                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-exclamation-circle"></i>
+                        <small>Error message</small>
                     </div>
-                    <div class="row">
-                        <div class="col-md-8 mb-1">
-                            <label for="address" class="pt-3">Adresse</label>
-                            <input type="text" class="form-control emailForm" id="address" placeholder="Votre adresse" required>
-                        </div>
-                        <div class="col-md-4 mb-1">
-                            <label for="city" class="pt-3">Ville</label>
-                            <input type="text" class="form-control emailForm" id="city" placeholder="Votre ville" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col mb-1 ">
-                            <label for="email" class="pt-3">Email</label>
-                            <input type="email" class="form-control emailForm" id="email" placeholder="Votre email" required>
-                            <span class="error"></span>
-                        </div>
+                    <div class="form-control col-md-6">
+                        <label for="lastName">Nom</label>
+                        <input type="text" placeholder="Votre nom" id="lastName">
+                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-exclamation-circle"></i>
+                        <small>Error message</small>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-control col-md-8">
+                        <label for="address">Adresse</label>
+                        <input type="text" placeholder="Votre adresse" id="address">
+                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-exclamation-circle"></i>
+                        <small>Error message</small>
+                    </div>
+                    <div class="form-control col-md-4">
+                        <label for="city">Ville</label>
+                        <input type="text" placeholder="Votre ville" id="city">
+                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-exclamation-circle"></i>
+                        <small>Error message</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-control">
+                        <label for="email">Email</label>
+                        <input type="email" placeholder="Votre email" id="email">
+                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-exclamation-circle"></i>
+                        <small>Error message</small>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button class="btn btn-primary my-3" id="validateButton"> Valider la commande</button>
+                </div>
             </form>
-            <div class="text-right">
-                <button class="btn btn-primary my-3" id="validateButton"> Valider la commande</button>
-            </div>
+
         </section>
         
 

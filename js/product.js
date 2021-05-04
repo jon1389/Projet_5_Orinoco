@@ -24,7 +24,7 @@ async function getCameras() {
         let cameras = response;
         // console.log(cameras); // Affiche l'ensemble des produits
         getIdUrlAndCard(cameras);
-    })
+    }) 
     .catch(function(error){
         alert(error);
         let errorDiv = document.querySelector(".error")
@@ -90,9 +90,9 @@ function addToCart(addCart) {
         else{
             cartContent.push(product);
         }
-        // console.log(itemInCart);
-        // console.log(cartContent);
-        // console.log(product);
+        console.log(itemInCart);
+        console.log(cartContent);
+        console.log(product);
         localStorage.setItem("cartContent", JSON.stringify(cartContent));
         // console.log(JSON.stringify(cartContent));
         numberInCart()

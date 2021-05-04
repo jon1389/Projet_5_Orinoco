@@ -38,15 +38,14 @@
                             <fieldset class="my-2">
                                 <label for="lense col-8" id="objectif" class="mr-2">Objectif :</label>
                                 <select name="lense col-4" id="lense">
-                                    <option value="default" id="option" hidden class="">Choisissez votre objectif</option>
+                                    <!-- <option value="default" id="option" hidden class="">Choisissez votre objectif</option> -->
                                 </select>
                             </fieldset>
-                            <div id="price" class="my-2">Prix</div>
+                            <div id="price" class="my-3">Prix</div>
                             <div class="error"></div>
-                            <!-- <input type="hidden" name="id" id="id" value="5be1ef211c9d44000030b062"> -->
                             <div class="product-buttons row">
-                                <a class="btn col-6 text-center" href="/">Retour à l'accueil</a>
-                                <a href="#" id= "addCart" class="btn col-6 text-center" data-toggle="modal" data-target="#addCartModal">Ajouter au panier</a>
+                                <a class="btn btn-warning col-5 mx-3 my-2 text-center" href="/">Retour à l'accueil</a>
+                                <a href="#" id= "addCart" class="btn btn-primary col-5 mx-3 my-2 text-center" data-toggle="modal" data-target="#addCartModal">Ajouter au panier</a>
                             </div >
                         </form>
                     </div>
@@ -57,13 +56,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Panier</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">L'article a bien été ajouté au panier !</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    </div>
-                    <div class="modal-body my-2">
-                    L'article a bien été ajouté au panier !
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Continuer les achats</button>

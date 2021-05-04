@@ -21,11 +21,25 @@ async function getCart() {
         }
         totalPriceOrder(arrayPrice, cartContent);
         let removeCart = document.getElementById("removeCart");
-        console.log(cartContent)
+        let emptyCart = document.getElementById("emptyCart");
+        let returnToHome = document.getElementById("returnToHome");
+        // console.log(cartContent.length)
         removeCart.addEventListener('click', () => {
-            if(cartContent) {
-                cartConfirmation()
-                onLoadNumberInCart()
+            if(cartContent.length) {
+                emptyCart.addEventListener('click', () => {
+                    localStorage.clear(cartContent);
+                    cartTableBody.remove(cartTableBody);
+                    cartContent.length=0;
+                    document.getElementById('cartTableTotalPrice').textContent = 0 +" €";
+                    onLoadNumberInCart()
+                })
+            }
+            else{
+                removeCart.dataset.target = "#cartIsEmptyModal";
+                returnToHome.addEventListener('click', () =>{
+                    window.location.href = "index.html"
+                    onLoadNumberInCart()
+                })
             }
         })
     })
@@ -34,15 +48,6 @@ async function getCart() {
         let errorDiv = document.querySelector(".error")
         errorDiv.textContent = "Une erreur est survenu, veuillez revenir plus tard.";
     })
-}
-
-function cartConfirmation(cartContent){
-    let cartTableBody = document.getElementById("cartTableBody");
-    if(confirm("Êtes-vous sûr de vouloir vider le panier ?")){
-        localStorage.clear(cartContent);
-        cartTableBody.remove(cartTableBody);
-        document.getElementById('cartTableTotalPrice').textContent = 0 +" €";
-    }
 }
 
 getCart()
@@ -60,7 +65,7 @@ function addItemPrice(itemCamera) {
 function addIdProducts(cartContent) {
     products.push(cartContent[i].idCamera);
     // console.log(cartContent[i].idCamera);
-    console.log(cartContent);
+    // console.log(cartContent);
 }
 
 //Prix total de la commande 
@@ -82,7 +87,6 @@ function itemsDisplayInCart(itemCamera, cartContent) {
     const cloneCart = document.importNode(templateCart.content, true);
 
     cloneCart.getElementById("cameraImg").src = itemCamera.imageUrl;
-    console.log(itemCamera.imageUrl)
     cloneCart.getElementById("cameraName").textContent = itemCamera.name;
     cloneCart.getElementById("cameraLense").textContent = cartContent[i].selectedLenses;
     cloneCart.getElementById("cameraQuantity").textContent = cartContent[i].itemQuantity;
@@ -102,7 +106,16 @@ function onLoadNumberInCart() {
     }
 }
 
-console.log(arrayPrice);
+// console.log(arrayPrice);
+
+let form = document.getElementById("form");
+let firstName = document.getElementById("firstName");
+let lastName = document.getElementById("lastName");
+let address = document.getElementById("address");
+let city = document.getElementById("city");
+let email = document.getElementById("email");
+let successElement = []; 
+let validateButton = document.getElementById("validateButton");
 
 class ClientData {
     constructor(firstName, lastName, address, city, email) {
@@ -114,20 +127,117 @@ class ClientData {
     }
 }
 
-function getOrderConfirmationId(responseId) {
-    let orderId = responseId.orderId;
-    console.log(orderId);
-    localStorage.setItem("orderConfirmationId", orderId);
+form.addEventListener('click', (e) => {
+    e.preventDefault();
+    checkInputs();
+    let successElement = localStorage.getItem("successElement");
+    validateButton.addEventListener('click', () => {
+        if (successElement == 5) {
+            console.log("ok");
+            confirmationOrder()
+        }
+        else{
+            console.log("moins de 5");
+        }
+    })
+})
+
+//vérifie si les champs complétés sont conformes
+function checkInputs() {
+    //trim pour supprimer les espaces
+    let firstNameValue = firstName.value.trim();
+    let lastNameValue = lastName.value.trim();
+    let addressValue = address.value.trim();
+    let cityValue = city.value.trim();
+    let emailValue = email.value.trim();
+
+    if (firstNameValue === "") {
+        setErrorFor(firstName, "Le champs ne peut pas être vide.")
+    }
+    else if (!isAlpha(firstNameValue)){
+        setErrorFor(firstName, "Ce champs ne peut contenir que des lettres");
+    }
+    else {
+        setSuccessFor(firstName)
+    }
+
+    if (lastNameValue === "") {
+        setErrorFor(lastName, "Le champs ne peut pas être vide.")
+    }
+    else if (!isAlpha(lastNameValue)){
+        setErrorFor(lastName, "Ce champs ne peut contenir que des lettres");
+    }
+    else {
+        setSuccessFor(lastName)
+    }
+
+    if (addressValue === "") {
+        setErrorFor(address, "Le champs ne peut pas être vide.")
+    }
+    else {
+        setSuccessFor(address)
+    }
+
+    if (cityValue === "") {
+        setErrorFor(city, "Le champs ne peut pas être vide.")
+    }
+    else if (!isAlpha(cityValue)){
+        setErrorFor(city, "Ce champs ne peut contenir que des lettres");
+    }
+    else {
+        setSuccessFor(city)
+    }
+
+    if(emailValue === '') {
+		setErrorFor(email, 'Le champs ne peut pas être vide.');
+	} else if (!isEmail(emailValue)) {
+		setErrorFor(email, "l'adresse email saisie n'est pas valide.");
+	} else {
+		setSuccessFor(email);
+	}
+
+    successElement = document.querySelectorAll("div.success")
+    localStorage.setItem("successElement", successElement.length)
+
+    contact = new ClientData(firstNameValue, lastNameValue, addressValue, cityValue, emailValue);
+
+    // console.log(successElement.length)
+    localStorage.setItem("firstName", firstNameValue);
+    console.log(firstNameValue)
 }
 
-//Récupération des données du formulaire dans l'objet contact
-function getForm() {
-    let firstname = document.getElementById('firstName').value;
-    let lastname = document.getElementById('lastName').value;
-    let address = document.getElementById('address').value;
-    let city = document.getElementById('city').value;
-    let email = document.getElementById('email').value;
-    contact = new ClientData(firstname, lastname, address, city, email);
+
+function setErrorFor(input, message) {
+    let formControl = input.parentElement;
+    let small = formControl.querySelector('small');
+
+    //ajout du message d'erreur dans la balise small
+    small.innerText = message;
+
+    //ajout de la class error
+	formControl.classList.add('error');
+    formControl.classList.remove('success');
+}
+
+function setSuccessFor(input) {
+	let formControl = input.parentElement;
+	formControl.classList.add('success');
+    formControl.classList.remove('error');
+
+}
+
+function isAlpha(input) {
+    return (/^[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ]+$/i).test(input)
+}
+
+function isEmail(email) {
+	return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+}
+
+function getOrderConfirmationId(responseId) {
+    let orderId = responseId.orderId;
+    // console.log(orderId);
+    localStorage.setItem("orderConfirmationId", orderId);
 }
 
 async function postForm(dataToSend) {
@@ -153,30 +263,8 @@ async function postForm(dataToSend) {
 
 //Validation de la commande et envoie de l'objet contact et du tableau product à l'API
 function confirmationOrder() {
-        getForm();
-        dataToSend = JSON.stringify({ contact, products });
-        console.log(dataToSend);
-        postForm(dataToSend);
+    dataToSend = JSON.stringify({ contact, products });
+    console.log(dataToSend);
+    postForm(dataToSend);
+    console.log(contact.firstName);
 }
-
-//Validation des données du formulaire
-function validateForm() {
-    let buttonValidation = document.getElementById('validateButton');
-    buttonValidation.addEventListener('click', function () {
-        let firstname = document.getElementById('firstName').value;
-        let lastname = document.getElementById('lastName').value;
-        let address = document.getElementById('address').value;
-        let city = document.getElementById('city').value;
-        let email = document.getElementById('email').value;
-        localStorage.setItem("firstname", firstname);
-        if (firstname, lastname, address, city, email != "" && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
-            confirmationOrder();
-            return true;
-        } else {
-            alert("Saisissez tous les champs et entrez un email valide");
-            return false;
-        }
-    })
-}
-
-validateForm()

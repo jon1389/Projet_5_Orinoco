@@ -3,7 +3,7 @@
 function addConfirmationOrder() {
     const confirmationId = localStorage.getItem("orderConfirmationId");
     const messageConfirmation = document.getElementById("orderId");
-    let firstname = localStorage.getItem("firstname");
+    let firstname = localStorage.getItem("firstName");
     messageConfirmation.innerHTML = "Merci " + firstname + " pour votre commande n° " + confirmationId;
     const totalPrice = localStorage.getItem("totalOrder");
     const confirmationPrice = document.getElementById("total-price");
