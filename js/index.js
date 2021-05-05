@@ -1,11 +1,10 @@
+// Déclaration des variables 
 let cartNumber = document.getElementById("cartNumber");
 
-main()
+
 onLoadNumberInCart();
 
-
-
-
+// Fonction principale 
 async function main() {
     const products = await getProducts();
     // Boucle pour afficher chaque produit dans une carte/template
@@ -14,7 +13,7 @@ async function main() {
     }
 }
 
-//Fonction pour obtenir la liste des produits
+// Fonction pour obtenir la liste des produits 
 function getProducts() {
     return fetch("https://ab-p5-api.herokuapp.com/api/cameras/")
         .then(function(httpBodyResponse) {
@@ -23,20 +22,21 @@ function getProducts() {
         .then(function(products) {
             return products;
         })
-        .catch(function(error){
-            alert(error);
+        .catch(() => {
+            error();
+            product.remove()
         })
 }
 
 //Fonction pour afficher un produit selon ses informations
 function displayProduct(product) {
-
-    //template qui contiendra la trame d'un produit
+    // Template qui contiendra la trame d'un produit
     const templateElement = document.getElementById("templateProduct");
     
-    //clone du template pour chaque produit
+    // Clone du template pour chaque produit
     const cloneElement = document.importNode(templateElement.content, true);
 
+    // Selection des éléments qui seront changés en fonction de l'article
     cloneElement.getElementById("productImg").src = product.imageUrl;
     cloneElement.getElementById("productName").textContent = product.name;
     cloneElement.getElementById("productDescription").textContent = product.description;
@@ -44,17 +44,10 @@ function displayProduct(product) {
     cloneElement.getElementById("id").textContent = product._id;
     cloneElement.getElementById("productUrl").href = `/product.html?id=${product._id}`;
 
+    // Applique le "clone" à la trame
     document.getElementById("main").appendChild(cloneElement);
 }
 
-function onLoadNumberInCart() {
-    let totalItemNumber = localStorage.getItem("totalItemNumber");
-    if(totalItemNumber){
-        cartNumber.textContent = totalItemNumber;
-    }
-    else{
-        cartNumber.textContent = 0;
-    }
-}
-
+// Appel des fonctions 
+main()
 

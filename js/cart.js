@@ -1,10 +1,11 @@
+// Déclaration des variables
 const mainUrl = "https://ab-p5-api.herokuapp.com/api/cameras/";
 const arrayPrice = [];
 let products = [];
+let cartTable = document.getElementById("cartTable");
+let clientForm = document.querySelector(".clientForm");
 
 document.getElementById("cartNumber").defaultValue = "0"
-
-onLoadNumberInCart()
 
 async function getCart() {
     return fetch(mainUrl)
@@ -31,28 +32,27 @@ async function getCart() {
                     cartTableBody.remove(cartTableBody);
                     cartContent.length=0;
                     document.getElementById('cartTableTotalPrice').textContent = 0 +" €";
-                    onLoadNumberInCart()
+                    onLoadNumberInCart();
                 })
             }
             else{
                 removeCart.dataset.target = "#cartIsEmptyModal";
+                onLoadNumberInCart();
                 returnToHome.addEventListener('click', () =>{
                     window.location.href = "index.html"
-                    onLoadNumberInCart()
                 })
             }
         })
     })
-    .catch(function(error){
-        alert(error);
-        let errorDiv = document.querySelector(".error")
-        errorDiv.textContent = "Une erreur est survenu, veuillez revenir plus tard.";
+    .catch(() => {
+        error();
+        cartTable.remove();
+        clientForm.remove()
     })
 }
 
-getCart()
 
-//Tableau de prix des articles choisis
+// Ajout du prix de l'article dans le tableau 
 function addItemPrice(itemCamera) {
     let itemPrice = itemCamera.price;
     arrayPrice.push(itemPrice);
@@ -61,14 +61,14 @@ function addItemPrice(itemCamera) {
 }
 
 
-//Ajout des id des articles choisis dans le tableau products
+// Ajout des id des articles choisis dans le tableau products
 function addIdProducts(cartContent) {
     products.push(cartContent[i].idCamera);
     // console.log(cartContent[i].idCamera);
     // console.log(cartContent);
 }
 
-//Prix total de la commande 
+// Calcule et affiche le total de la commande 
 function totalPriceOrder(arrayPrice, cartContent) {
     let totalPrice = document.getElementById('cartTableTotalPrice');
     let total = 0;
@@ -80,9 +80,12 @@ function totalPriceOrder(arrayPrice, cartContent) {
     }
 }
 
+// Fonction qui affiche chaque article ajouté au panier 
 function itemsDisplayInCart(itemCamera, cartContent) {
+
     //template qui contiendra la trame d'un produit
     const templateCart = document.getElementById("templateCart");
+    
     //clone du template pour chaque produit
     const cloneCart = document.importNode(templateCart.content, true);
 
@@ -96,18 +99,10 @@ function itemsDisplayInCart(itemCamera, cartContent) {
     document.getElementById("cartTableBody").appendChild(cloneCart);
 }
 
-function onLoadNumberInCart() {
-    let totalItemNumber = localStorage.getItem("totalItemNumber");
-    if(totalItemNumber){
-        cartNumber.textContent = totalItemNumber;
-    }
-    else{
-        cartNumber.textContent = 0;
-    }
-}
 
-// console.log(arrayPrice);
+///////// Partie formulaire client ///////// 
 
+// Déclaration des variables
 let form = document.getElementById("form");
 let firstName = document.getElementById("firstName");
 let lastName = document.getElementById("lastName");
@@ -117,6 +112,7 @@ let email = document.getElementById("email");
 let successElement = []; 
 let validateButton = document.getElementById("validateButton");
 
+// Création d'une classe pour structurer le tableau Client
 class ClientData {
     constructor(firstName, lastName, address, city, email) {
         this.firstName = firstName;
@@ -155,12 +151,7 @@ form.addEventListener('submit', (e) => {
 // }
 
 //vérifie si les champs complétés sont conformes
-function checkInputs() {    
-    let firstname = document.getElementById("firstName");
-    let lastname = document.getElementById("lastName");
-    let address = document.getElementById("address");
-    let city = document.getElementById("city");
-    let email = document.getElementById("email");
+function checkInputs() {
     let firstNameValue = firstName.value.trim(); //trim pour supprimer les espaces
     let lastNameValue = lastName.value.trim();
     let addressValue = address.value.trim();
@@ -228,7 +219,6 @@ function checkInputs() {
         }
     // })
 
-
     successElement = document.querySelectorAll("div.success")
     // console.log(successElement);
     localStorage.setItem("successElement", successElement.length)
@@ -239,7 +229,7 @@ function checkInputs() {
     // console.log(firstNameValue);
 }
 
-
+// Fonction qui se lance en cas de champs mal renseigné
 function setErrorFor(input, message) {
     let formControl = input.parentElement;
     let small = formControl.querySelector('small');
@@ -252,25 +242,14 @@ function setErrorFor(input, message) {
     formControl.classList.remove('success');
 }
 
+// Fonction qui se lance lorsque le champs et bien renseigné
 function setSuccessFor(input) {
 	let formControl = input.parentElement;
 	formControl.classList.add('success');
     formControl.classList.remove('error');
-
 }
 
-function isAlpha(input) {
-    return (/^[a-zA-ZàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ]+$/i).test(input)
-}
-
-function isEmail(email) {
-	return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
-}
-
-function isCity(city) {
-    return (/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(city));
-}
-
+// Fonction qui récupère le code de la commande
 function getOrderConfirmationId(responseId) {
     let orderId = responseId.orderId;
     // console.log(orderId);
@@ -305,3 +284,7 @@ function confirmationOrder() {
     postForm(dataToSend);
     console.log(contact.firstName);
 }
+
+// Appel des fonctions
+onLoadNumberInCart()
+getCart()

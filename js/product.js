@@ -1,3 +1,4 @@
+// Déclaration des variables //
 let productName = document.getElementById("productName");
 let productImg = document.getElementById("productImg");
 let lense = document.getElementById("lense");
@@ -5,10 +6,10 @@ let price = document.getElementById("price");
 let addCart = document.getElementById("addCart");
 let quantity = document.getElementById("quantity");
 let cartNumber = document.getElementById("cartNumber");
-let idCamera
+let product = document.getElementById("product");
+let mainUrl = "https://ab-p5-api.herokuapp.com/api/cameras/";
 
-const mainUrl = "https://ab-p5-api.herokuapp.com/api/cameras/";
-
+// Création d'une classe pour structurer le tableau product
 class MyProduct {
     constructor(idCamera, selectedLenses, itemQuantity) {
         this.idCamera = idCamera;
@@ -17,6 +18,7 @@ class MyProduct {
     }
 }
 
+// Requête API pour obtenir les informations des produits
 async function getCameras() {
     return fetch(mainUrl)
     .then((response) => response.json ())
@@ -25,17 +27,11 @@ async function getCameras() {
         // console.log(cameras); // Affiche l'ensemble des produits
         getIdUrlAndCard(cameras);
     }) 
-    .catch(function(error){
-        alert(error);
-        let errorDiv = document.querySelector(".error")
-        errorDiv.textContent = "Une erreur est survenu, veuillez revenir plus tard.";
+    .catch(() => {
+        error();
+        product.remove();
     })
 }
-
-/////////////////////////////APPEL DE LA FONCTION/////////////////////////////////
-getCameras();
-onLoadNumberInCart()
-
 
 // Récupération de l'Id dans l'url
 function getIdUrlAndCard(cameras) {
@@ -52,8 +48,6 @@ function getCameraItem(cameras, idCamera) {
     updateCameraCard(choosenCamera, idCamera)
 };
 
-getCameraItem();
-
 // Mise à jour de la carte produit
 function updateCameraCard (choosenCamera) {
     // console.log(choosenCamera);
@@ -61,18 +55,17 @@ function updateCameraCard (choosenCamera) {
     productImg.src = choosenCamera.imageUrl;
     price.textContent = "Prix unitaire : " + choosenCamera.price/100 + " €";
     
-    // Boucle qui affiche chaque élément dans la liste déroulante 
+    // Boucle qui affiche chaque lentille dans la liste déroulante 
     let lenses = choosenCamera.lenses;
     for (let option = 0; option < lenses.length; option++) {
-        // console.log(lenses[option]); // affiche la valeur de l'index
-        // console.log(option); // affiche l'index
+        // console.log(lenses[option]); // Affiche la valeur de l'index
+        // console.log(option); // Affiche l'index
         lense.innerHTML += '<option class="lenseOption" value=' + option + ' >'+ lenses[option] + '</option>';
     };
     addToCart(addCart, choosenCamera);
 };
 
-
-
+// Fonction d'ajout du produit au panier
 function addToCart(addCart) {
     let goToCart = document.getElementById("goToCart");
     let itemQuantity = 1;
@@ -90,11 +83,10 @@ function addToCart(addCart) {
         else{
             cartContent.push(product);
         }
-        console.log(itemInCart);
-        console.log(cartContent);
-        console.log(product);
+        // console.log(itemInCart); // Affiche la caméra ajoutée dans le panier
+        // console.log(cartContent); // Affiche le contenu du panier sous forme d'array
         localStorage.setItem("cartContent", JSON.stringify(cartContent));
-        // console.log(JSON.stringify(cartContent));
+        // console.log(JSON.stringify(cartContent)); // Affiche le contenu du panier sous forme de chaîne JSON
         numberInCart()
     });
     goToCart.addEventListener("click", () => {
@@ -102,6 +94,7 @@ function addToCart(addCart) {
     })
 };
 
+// Fonction qui permet d'obtenir la quantité de produit dans le panier
 function numberInCart(){
     let totalItemNumber = 0;
     let cartNumber = document.getElementById("cartNumber");
@@ -112,26 +105,19 @@ function numberInCart(){
     }
     for (let index = 0; index < cartContent.length; index++) {
         itemNumber.push(cartContent[index].itemQuantity);
-        // let itemNumber = cartContent[index].itemQuantity;
         // console.log(itemNumber);
     }
-    console.log(itemNumber);
+    // console.log(itemNumber);
     for (let i = 0; i < itemNumber.length; i++) {
         totalItemNumber += itemNumber[i];
     }
-    console.log(totalItemNumber);
+    // console.log(totalItemNumber);
     localStorage.setItem("totalItemNumber", totalItemNumber)
     if(totalItemNumber){
         cartNumber.textContent = totalItemNumber;
     }
 }
 
-function onLoadNumberInCart() {
-    let totalItemNumber = localStorage.getItem("totalItemNumber");
-    if(totalItemNumber){
-        cartNumber.textContent = totalItemNumber;
-    }
-    else{
-        cartNumber.textContent = 0;
-    }
-}
+// Appel des fonctions 
+getCameras();
+onLoadNumberInCart()

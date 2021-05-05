@@ -5,6 +5,15 @@
     object-fit: cover;
 }
 
+.errorDiv{
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.errorImg{
+    outline: none;
+}
+
 /* product elements */
 .modal-dialog{
     margin-top: 250px;

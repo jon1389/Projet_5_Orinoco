@@ -10,7 +10,6 @@ function addConfirmationOrder() {
     confirmationPrice.innerHTML = "Prix total : " + totalPrice /100 + " €";
 }
 
-
 // Vider le panier, le prix total et l'id de commande
 function resetOrder() {
     confirmationButton = document.getElementById('confirmationButton');
@@ -20,16 +19,7 @@ function resetOrder() {
     })
 }
 
-function onLoadNumberInCart() {
-    let totalItemNumber = localStorage.getItem("totalItemNumber");
-    if(totalItemNumber){
-        cartNumber.textContent = totalItemNumber;
-    }
-    else{
-        cartNumber.textContent = 0;
-    }
-}
-
+// Appel des fonctions
 onLoadNumberInCart()
 addConfirmationOrder()
 resetOrder()
