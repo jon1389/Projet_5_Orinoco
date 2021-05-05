@@ -127,83 +127,116 @@ class ClientData {
     }
 }
 
-form.addEventListener('click', (e) => {
+form.addEventListener('submit', (e) => {
     e.preventDefault();
     checkInputs();
     let successElement = localStorage.getItem("successElement");
-    validateButton.addEventListener('click', () => {
-        if (successElement == 5) {
-            console.log("ok");
-            confirmationOrder()
-        }
-        else{
-            console.log("moins de 5");
-        }
-    })
+    if (successElement == 5) {
+        console.log("ok");
+        confirmationOrder()
+    }
+    // else {
+    //     console.log(successElement)
+    // }
+    // validateCart()
 })
 
+// function validateCart() {
+//     validateButton.addEventListener('click', () => {
+//         let successElement = localStorage.getItem("successElement");
+//         if (successElement == 5) {
+//             console.log("ok");
+//             confirmationOrder()
+//         }
+//         else {
+//             console.log(successElement)
+//         }
+//     })
+// }
+
 //vérifie si les champs complétés sont conformes
-function checkInputs() {
-    //trim pour supprimer les espaces
-    let firstNameValue = firstName.value.trim();
+function checkInputs() {    
+    let firstname = document.getElementById("firstName");
+    let lastname = document.getElementById("lastName");
+    let address = document.getElementById("address");
+    let city = document.getElementById("city");
+    let email = document.getElementById("email");
+    let firstNameValue = firstName.value.trim(); //trim pour supprimer les espaces
     let lastNameValue = lastName.value.trim();
     let addressValue = address.value.trim();
     let cityValue = city.value.trim();
     let emailValue = email.value.trim();
+    
+    // firstname.addEventListener('input', () => {
+        // let firstNameValue = firstName.value.trim();
+        console.log(firstNameValue)
+        if (firstNameValue == "" || firstNameValue == null) {
+            setErrorFor(firstName, "Le champs ne peut pas être vide.")
+        }
+        else if (!isAlpha(firstNameValue)){
+            setErrorFor(firstName, "Ce champs ne peut contenir que des lettres");
+        }
+        else {
+            setSuccessFor(firstName)
+        }
+    // })
+    
+    // lastname.addEventListener('input', () => {
+        // let lastNameValue = lastName.value.trim();
+        if (lastNameValue === "" || lastNameValue == null ) {
+            setErrorFor(lastName, "Le champs ne peut pas être vide.")
+        }
+        else if (!isAlpha(lastNameValue)){
+            setErrorFor(lastName, "Ce champs ne peut contenir que des lettres");
+        }
+        else {
+            setSuccessFor(lastName)
+        }
+    // })
+    
+    // address.addEventListener('input', () => {
+        // let addressValue = address.value.trim();
+        if (addressValue === "" || addressValue == null) {
+            setErrorFor(address, "Le champs ne peut pas être vide.")
+        }
+        else {
+            setSuccessFor(address)
+        }
+    // })
 
-    if (firstNameValue === "") {
-        setErrorFor(firstName, "Le champs ne peut pas être vide.")
-    }
-    else if (!isAlpha(firstNameValue)){
-        setErrorFor(firstName, "Ce champs ne peut contenir que des lettres");
-    }
-    else {
-        setSuccessFor(firstName)
-    }
+    // city.addEventListener('input', () => {
+        // let cityValue = city.value.trim();
+        if (cityValue === "" || cityValue == null) {
+            setErrorFor(city, "Le champs ne peut pas être vide.")
+        }
+        else if (!isCity(cityValue)){
+            setErrorFor(city, "Ce champs ne peut contenir que des lettres");
+        }
+        else {
+            setSuccessFor(city)
+        }
+    // })
 
-    if (lastNameValue === "") {
-        setErrorFor(lastName, "Le champs ne peut pas être vide.")
-    }
-    else if (!isAlpha(lastNameValue)){
-        setErrorFor(lastName, "Ce champs ne peut contenir que des lettres");
-    }
-    else {
-        setSuccessFor(lastName)
-    }
+    // email.addEventListener('input', () => {
+        // let emailValue = email.value.trim();
+        if(emailValue === '' || emailValue == null) {
+            setErrorFor(email, 'Le champs ne peut pas être vide.');
+        } else if (!isEmail(emailValue)) {
+            setErrorFor(email, "l'adresse email saisie n'est pas valide.");
+        } else {
+            setSuccessFor(email);
+        }
+    // })
 
-    if (addressValue === "") {
-        setErrorFor(address, "Le champs ne peut pas être vide.")
-    }
-    else {
-        setSuccessFor(address)
-    }
-
-    if (cityValue === "") {
-        setErrorFor(city, "Le champs ne peut pas être vide.")
-    }
-    else if (!isAlpha(cityValue)){
-        setErrorFor(city, "Ce champs ne peut contenir que des lettres");
-    }
-    else {
-        setSuccessFor(city)
-    }
-
-    if(emailValue === '') {
-		setErrorFor(email, 'Le champs ne peut pas être vide.');
-	} else if (!isEmail(emailValue)) {
-		setErrorFor(email, "l'adresse email saisie n'est pas valide.");
-	} else {
-		setSuccessFor(email);
-	}
 
     successElement = document.querySelectorAll("div.success")
+    // console.log(successElement);
     localStorage.setItem("successElement", successElement.length)
 
     contact = new ClientData(firstNameValue, lastNameValue, addressValue, cityValue, emailValue);
-
-    // console.log(successElement.length)
+    // console.log(successElement.length);
     localStorage.setItem("firstName", firstNameValue);
-    console.log(firstNameValue)
+    // console.log(firstNameValue);
 }
 
 
@@ -232,6 +265,10 @@ function isAlpha(input) {
 
 function isEmail(email) {
 	return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+}
+
+function isCity(city) {
+    return (/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(city));
 }
 
 function getOrderConfirmationId(responseId) {
