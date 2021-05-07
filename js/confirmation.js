@@ -14,12 +14,13 @@ function addConfirmationOrder() {
 function resetOrder() {
     confirmationButton = document.getElementById('confirmationButton');
     confirmationButton.addEventListener('click', function () {
-        localStorage.clear("cartContent")
+        // localStorage.clear("cartContent")
         window.location.href = "./index.html";
     })
 }
 
 // Appel des fonctions
-onLoadNumberInCart()
 addConfirmationOrder()
 resetOrder()
+localStorage.clear()
+onLoadNumberInCart()

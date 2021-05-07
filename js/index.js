@@ -1,9 +1,6 @@
 // Déclaration des variables 
 let cartNumber = document.getElementById("cartNumber");
 
-
-onLoadNumberInCart();
-
 // Fonction principale 
 async function main() {
     const products = await getProducts();
@@ -50,4 +47,4 @@ function displayProduct(product) {
 
 // Appel des fonctions 
 main()
-
+onLoadNumberInCart();

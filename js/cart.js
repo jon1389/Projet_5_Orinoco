@@ -2,6 +2,7 @@
 const mainUrl = "https://ab-p5-api.herokuapp.com/api/cameras/";
 const arrayPrice = [];
 let products = [];
+let contact = {};
 let cartTable = document.getElementById("cartTable");
 let clientForm = document.querySelector(".clientForm");
 
@@ -99,7 +100,6 @@ function itemsDisplayInCart(itemCamera, cartContent) {
     document.getElementById("cartTableBody").appendChild(cloneCart);
 }
 
-
 ///////// Partie formulaire client ///////// 
 
 // Déclaration des variables
@@ -123,131 +123,71 @@ class ClientData {
     }
 }
 
-form.addEventListener('submit', (e) => {
+// Vérification des champs du formulaire
+form.addEventListener('click', (e) => {
     e.preventDefault();
-    checkInputs();
-    let successElement = localStorage.getItem("successElement");
-    if (successElement == 5) {
-        console.log("ok");
-        confirmationOrder()
-    }
-    // else {
-    //     console.log(successElement)
-    // }
-    // validateCart()
-})
-
-// function validateCart() {
-//     validateButton.addEventListener('click', () => {
-//         let successElement = localStorage.getItem("successElement");
-//         if (successElement == 5) {
-//             console.log("ok");
-//             confirmationOrder()
-//         }
-//         else {
-//             console.log(successElement)
-//         }
-//     })
-// }
-
-//vérifie si les champs complétés sont conformes
-function checkInputs() {
+    
+    firstName.addEventListener('input',() =>{
+        checkAlpha(firstName)
+        localStorage.setItem("firstName", firstName.value);
+    });
+    
+    lastName.addEventListener('input',() =>{
+        checkAlpha(lastName);
+    });
+    
+    address.addEventListener('input',() =>{
+        checkAlphaNum(address);
+    });
+    
+    city.addEventListener('input',() =>{
+        checkCity(city);
+    });
+    
+    email.addEventListener('input',() =>{
+        checkEmail(email);
+    });
+    
+    // Déclaration des variables qui seront entrées dans le tableau contact
     let firstNameValue = firstName.value.trim(); //trim pour supprimer les espaces
     let lastNameValue = lastName.value.trim();
     let addressValue = address.value.trim();
     let cityValue = city.value.trim();
     let emailValue = email.value.trim();
-    
-    // firstname.addEventListener('input', () => {
-        // let firstNameValue = firstName.value.trim();
-        console.log(firstNameValue)
-        if (firstNameValue == "" || firstNameValue == null) {
-            setErrorFor(firstName, "Le champs ne peut pas être vide.")
-        }
-        else if (!isAlpha(firstNameValue)){
-            setErrorFor(firstName, "Ce champs ne peut contenir que des lettres");
-        }
-        else {
-            setSuccessFor(firstName)
-        }
-    // })
-    
-    // lastname.addEventListener('input', () => {
-        // let lastNameValue = lastName.value.trim();
-        if (lastNameValue === "" || lastNameValue == null ) {
-            setErrorFor(lastName, "Le champs ne peut pas être vide.")
-        }
-        else if (!isAlpha(lastNameValue)){
-            setErrorFor(lastName, "Ce champs ne peut contenir que des lettres");
-        }
-        else {
-            setSuccessFor(lastName)
-        }
-    // })
-    
-    // address.addEventListener('input', () => {
-        // let addressValue = address.value.trim();
-        if (addressValue === "" || addressValue == null) {
-            setErrorFor(address, "Le champs ne peut pas être vide.")
-        }
-        else {
-            setSuccessFor(address)
-        }
-    // })
-
-    // city.addEventListener('input', () => {
-        // let cityValue = city.value.trim();
-        if (cityValue === "" || cityValue == null) {
-            setErrorFor(city, "Le champs ne peut pas être vide.")
-        }
-        else if (!isCity(cityValue)){
-            setErrorFor(city, "Ce champs ne peut contenir que des lettres");
-        }
-        else {
-            setSuccessFor(city)
-        }
-    // })
-
-    // email.addEventListener('input', () => {
-        // let emailValue = email.value.trim();
-        if(emailValue === '' || emailValue == null) {
-            setErrorFor(email, 'Le champs ne peut pas être vide.');
-        } else if (!isEmail(emailValue)) {
-            setErrorFor(email, "l'adresse email saisie n'est pas valide.");
-        } else {
-            setSuccessFor(email);
-        }
-    // })
-
-    successElement = document.querySelectorAll("div.success")
-    // console.log(successElement);
-    localStorage.setItem("successElement", successElement.length)
-
     contact = new ClientData(firstNameValue, lastNameValue, addressValue, cityValue, emailValue);
-    // console.log(successElement.length);
-    localStorage.setItem("firstName", firstNameValue);
-    // console.log(firstNameValue);
-}
+    // console.log(contact);
+    // console.log(contact.firstName)
+    
+    // Variable qui selectionne les éléments qui obtiendront la classe "success"
+    let successElement = document.querySelectorAll("div.success");
 
-// Fonction qui se lance en cas de champs mal renseigné
-function setErrorFor(input, message) {
-    let formControl = input.parentElement;
-    let small = formControl.querySelector('small');
+    // Stockage des champs correctement complétés
+    localStorage.setItem("successElement", successElement.length)
+    // console.log(successElement.length);    
+})
 
-    //ajout du message d'erreur dans la balise small
-    small.innerText = message;
+validateButton.addEventListener('click', () => {
+    let successElement = localStorage.getItem("successElement");
+    let totalItemNumber = localStorage.getItem("totalItemNumber")
 
-    //ajout de la class error
-	formControl.classList.add('error');
-    formControl.classList.remove('success');
-}
+    // Si les 5 champs requis ne sont pas correctes alors la fenêtre "formIncomplete" apparaitra 
+    if (successElement != 5) {
+        // alert("Tous les champs doivent être valides.")
+        validateButton.dataset.target = "#formIncomplete"
 
-// Fonction qui se lance lorsque le champs et bien renseigné
-function setSuccessFor(input) {
-	let formControl = input.parentElement;
-	formControl.classList.add('success');
-    formControl.classList.remove('error');
-}
+        //vérification de tous les inputs afin de montrer ceux qui ne sont pas correctement remplis
+        checkAllInputs();
+    }
+    // Vérifie si le panier est vide
+    else if (totalItemNumber === null) {
+        // alert("Votre panier est vide !")
+        validateButton.dataset.target = "#cartIsEmpty"
+        checkAllInputs();
+    }
+    else{
+        confirmationOrder()
+    }
+})
 
 // Fonction qui récupère le code de la commande
 function getOrderConfirmationId(responseId) {
@@ -256,6 +196,15 @@ function getOrderConfirmationId(responseId) {
     localStorage.setItem("orderConfirmationId", orderId);
 }
 
+//Validation de la commande et envoie de l'objet contact et du tableau product à l'API
+function confirmationOrder() {
+    dataToSend = JSON.stringify({ contact, products });
+    console.log(dataToSend);
+    postForm(dataToSend);
+    // console.log(firstName.value);
+}
+
+// Requête POST pour envoyer l'objet Contact et le tableau products à l'API
 async function postForm(dataToSend) {
     try {
         let response = await fetch(mainUrl+"order", {
@@ -275,14 +224,6 @@ async function postForm(dataToSend) {
     } catch (e) {
         console.log(e);
     }
-}
-
-//Validation de la commande et envoie de l'objet contact et du tableau product à l'API
-function confirmationOrder() {
-    dataToSend = JSON.stringify({ contact, products });
-    console.log(dataToSend);
-    postForm(dataToSend);
-    console.log(contact.firstName);
 }
 
 // Appel des fonctions

@@ -130,7 +130,7 @@
                 <div class="row">
                     <div class="form-control col-md-8">
                         <label for="address">Adresse</label>
-                        <input type="text" placeholder="Votre adresse" id="address">
+                        <input type="text" placeholder="Votre adresse" id="address" required>
                         <i class="fas fa-check-circle"></i>
                         <i class="fas fa-exclamation-circle"></i>
                         <small>Error message</small>
@@ -152,10 +152,38 @@
                         <small>Error message</small>
                     </div>
                 </div>
-                <div class="text-right">
-                    <button class="btn btn-primary my-3" id="validateButton"> Valider la commande</button>
-                </div>
             </form>
+            <div class="text-right">
+                <button class="btn btn-primary my-3" id="validateButton" data-toggle="modal" data-target="#"> Valider la commande</button>
+            </div>
+            <div class="modal fade" id="formIncomplete" tabindex="-1" role="dialog" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tous les champs doivent être valides !</h5>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="cartIsEmpty" tabindex="-1" role="dialog" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Le panier est vide !</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>Votre commande ne pas être confirmée.</p>
+                            <p>Veuillez ajouter un ou plusieurs articles.</p>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </section>
         

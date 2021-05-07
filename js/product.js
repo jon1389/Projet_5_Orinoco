@@ -50,7 +50,6 @@ function getCameraItem(cameras, idCamera) {
 
 // Mise à jour de la carte produit
 function updateCameraCard (choosenCamera) {
-    // console.log(choosenCamera);
     productName.textContent = choosenCamera.name;
     productImg.src = choosenCamera.imageUrl;
     price.textContent = "Prix unitaire : " + choosenCamera.price/100 + " €";
