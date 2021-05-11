@@ -8,6 +8,7 @@ let clientForm = document.querySelector(".clientForm");
 
 document.getElementById("cartNumber").defaultValue = "0"
 
+// Requête API pour obtenir les informations des produits et mettre à jour la page panier
 async function getCart() {
     return fetch(mainUrl)
     .then((response) => response.json ())
@@ -52,7 +53,6 @@ async function getCart() {
     })
 }
 
-
 // Ajout du prix de l'article dans le tableau 
 function addItemPrice(itemCamera) {
     let itemPrice = itemCamera.price;
@@ -60,7 +60,6 @@ function addItemPrice(itemCamera) {
     // console.log(itemPrice);
     // console.log(arrayPrice);
 }
-
 
 // Ajout des id des articles choisis dans le tableau products
 function addIdProducts(cartContent) {
