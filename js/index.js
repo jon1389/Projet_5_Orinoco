@@ -39,7 +39,7 @@ function displayProduct(product) {
     cloneElement.getElementById("productDescription").textContent = product.description;
     cloneElement.getElementById("productPrice").textContent = product.price /100 + " €";
     cloneElement.getElementById("id").textContent = product._id;
-    cloneElement.getElementById("productUrl").href = `/product.html?id=${product._id}`;
+    cloneElement.getElementById("productUrl").href = `./product.html?id=${product._id}`;
 
     // Applique le "clone" à la trame
     document.getElementById("main").appendChild(cloneElement);
