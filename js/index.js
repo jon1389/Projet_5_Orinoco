@@ -17,6 +17,7 @@ function getProducts() {
             return httpBodyResponse.json();
         })
         .then(function(products) {
+            // console.log(products);
             return products;
         })
         .catch(() => {

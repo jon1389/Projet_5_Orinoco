@@ -14,7 +14,6 @@ function addConfirmationOrder() {
 function resetOrder() {
     confirmationButton = document.getElementById('confirmationButton');
     confirmationButton.addEventListener('click', function () {
-        // localStorage.clear("cartContent")
         window.location.href = "./index.html";
     })
 }

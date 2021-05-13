@@ -123,70 +123,74 @@ class ClientData {
 }
 
 // Vérification des champs du formulaire
-form.addEventListener('click', (e) => {
-    e.preventDefault();
+function checkForm() {
+    form.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        firstName.addEventListener('input',() =>{
+            checkAlpha(firstName)
+            localStorage.setItem("firstName", firstName.value);
+        });
+        
+        lastName.addEventListener('input',() =>{
+            checkAlpha(lastName);
+        });
+        
+        address.addEventListener('input',() =>{
+            checkAlphaNum(address);
+        });
+        
+        city.addEventListener('input',() =>{
+            checkCity(city);
+        });
+        
+        email.addEventListener('input',() =>{
+            checkEmail(email);
+        });
+        
+        // Déclaration des variables qui seront entrées dans le tableau contact
+        let firstNameValue = firstName.value.trim(); //trim pour supprimer les espaces
+        let lastNameValue = lastName.value.trim();
+        let addressValue = address.value.trim();
+        let cityValue = city.value.trim();
+        let emailValue = email.value.trim();
+        contact = new ClientData(firstNameValue, lastNameValue, addressValue, cityValue, emailValue);
+        // console.log(contact);
+        // console.log(contact.firstName)
+        
+        // Variable qui selectionne les éléments qui obtiendront la classe "success"
+        let successElement = document.querySelectorAll("div.success");
     
-    firstName.addEventListener('input',() =>{
-        checkAlpha(firstName)
-        localStorage.setItem("firstName", firstName.value);
-    });
-    
-    lastName.addEventListener('input',() =>{
-        checkAlpha(lastName);
-    });
-    
-    address.addEventListener('input',() =>{
-        checkAlphaNum(address);
-    });
-    
-    city.addEventListener('input',() =>{
-        checkCity(city);
-    });
-    
-    email.addEventListener('input',() =>{
-        checkEmail(email);
-    });
-    
-    // Déclaration des variables qui seront entrées dans le tableau contact
-    let firstNameValue = firstName.value.trim(); //trim pour supprimer les espaces
-    let lastNameValue = lastName.value.trim();
-    let addressValue = address.value.trim();
-    let cityValue = city.value.trim();
-    let emailValue = email.value.trim();
-    contact = new ClientData(firstNameValue, lastNameValue, addressValue, cityValue, emailValue);
-    // console.log(contact);
-    // console.log(contact.firstName)
-    
-    // Variable qui selectionne les éléments qui obtiendront la classe "success"
-    let successElement = document.querySelectorAll("div.success");
+        // Stockage des champs correctement complétés
+        localStorage.setItem("successElement", successElement.length)
+        // console.log(successElement.length);    
+    })
+    validateForm()
+}
 
-    // Stockage des champs correctement complétés
-    localStorage.setItem("successElement", successElement.length)
-    // console.log(successElement.length);    
-})
-
-validateButton.addEventListener('click', () => {
-    let successElement = localStorage.getItem("successElement");
-    let totalItemNumber = localStorage.getItem("totalItemNumber")
-
-    // Si les 5 champs requis ne sont pas correctes alors la fenêtre "formIncomplete" apparaitra 
-    if (successElement != 5) {
-        // alert("Tous les champs doivent être valides.")
-        validateButton.dataset.target = "#formIncomplete"
-
-        //vérification de tous les inputs afin de montrer ceux qui ne sont pas correctement remplis
-        checkAllInputs();
-    }
-    // Vérifie si le panier est vide
-    else if (totalItemNumber === null) {
-        // alert("Votre panier est vide !")
-        validateButton.dataset.target = "#cartIsEmpty"
-        checkAllInputs();
-    }
-    else{
-        confirmationOrder()
-    }
-})
+function validateForm() {
+    validateButton.addEventListener('click', () => {
+        let successElement = localStorage.getItem("successElement");
+        let totalItemNumber = localStorage.getItem("totalItemNumber")
+        // Si les 5 champs requis ne sont pas correctes alors la fenêtre "formIncomplete" apparaitra 
+        if (successElement != 5) {
+            // alert("Tous les champs doivent être valides.")
+            validateButton.dataset.target = "#formIncomplete"
+    
+            //vérification de tous les inputs afin de montrer ceux qui ne sont pas correctement remplis
+            checkAllInputs();
+        }
+        // Vérifie si le panier est vide
+        else if (totalItemNumber === null) {
+            // alert("Votre panier est vide !")
+            validateButton.dataset.target = "#cartIsEmpty"
+            checkAllInputs();
+        }
+        else{
+            confirmationOrder()
+        }
+    })
+}
 
 // Fonction qui récupère le code de la commande
 function getOrderConfirmationId(responseId) {
@@ -228,3 +232,4 @@ async function postForm(dataToSend) {
 // Appel des fonctions
 onLoadNumberInCart()
 getCart()
+checkForm()
