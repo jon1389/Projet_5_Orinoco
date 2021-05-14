@@ -1,4 +1,9 @@
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+input {
+    outline: none;
+}
+
 .card-img-top {
     width: 100%;
     height: 300px;
